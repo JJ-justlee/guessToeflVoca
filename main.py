@@ -1,7 +1,7 @@
 import openai
 
 #Input API Key
-openai.api_key = "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"
+openai.api_key = ""
 
 def give_toefl_voca():
     response = openai.ChatCompletion.create(
