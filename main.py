@@ -19,30 +19,34 @@ def give_toefl_voca():
 
     return voca
 
-def give_meaning_of_voca(voca):
-    answer = input(f"What is the meaning of this {voca}?: ")
+def guess_meaning_of_voca(voca):
+    answer = input(f"What is the meaning of {voca}?: ")
 
     responseOfAnswer = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
         messages=[
-            {"role": "user", "content": f"tell me if meaning of {voca} is {answer}. if correct, tell me correct. but if incorrect, tell me incorrect"}
+            {"role": "user", "content": f"tell me if meaning of {voca} is right or not, here is suggestion. if it's incorrect, then tell me Incorrect and it's not, then tell me correct. {answer} is korean. if the answer is similar, because of something like typo, consider is as correct."}
         ]
     )
 
-    correctOrIncorrect = responseOfAnswer['choices'][0]['message']['content']
-    correctOrIncorrect = correctOrIncorrect.strip()
+    correctOrIncorrect = responseOfAnswer['choices'][0]['message']['content'].lower()
 
     if correctOrIncorrect == 'incorrect':
         print(f"This is not the meaning of {voca}")
     elif correctOrIncorrect == 'correct':
-        print("congratulation!")
-    else:
-        print("ss")
+        print("Good!")
+
+    getAsampleSentence = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",
+        messages=[
+            {"role": "user", "content": f"give me korean meaning of {voca} and a sample sentence using the {voca} with korean meaning."}
+            ]
+    )
+
+    printAsentence = getAsampleSentence['choices'][0]['message']['content']
+
+    print(printAsentence)
 
     return 0
-
-if __name__ == "__main__":
-    voca = give_toefl_voca()
-    give_meaning_of_voca(voca)
 
 
