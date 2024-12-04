@@ -1,4 +1,5 @@
 import openai
+from modules.db import connect_db
 
 #Input API Key
 openai.api_key = ""
