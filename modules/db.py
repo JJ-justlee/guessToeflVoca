@@ -1,14 +1,19 @@
 import psycopg2
 import bcrypt
+import encDecModule
 from psycopg2 import connect
+
+from config.keyConfig import user, dbPassword, host, saltKey
+
+simpleEnDecrypt = encDecModule.SimpleEnDecrypt(saltKey)
 
 #데이터베이스 연결 정보
 DB_CONFIG = {
-    'dbname': '', #데이터베이스 이름
-    'user': '', #사용자 이름
-    'password': '', #비밀번호
-    'host': '', #호스트 주소
-    'port':  #포트 번호
+    'dbname': 'postgres', #데이터베이스 이름
+    'user': simpleEnDecrypt.decrypt(user), #사용자 이름
+    'password': simpleEnDecrypt.decrypt(dbPassword), #비밀번호
+    'host': simpleEnDecrypt.decrypt(host), #호스트 주소
+    'port': 5432 #포트 번호
 }
 
 #데이터 베이스 연결 함수
